@@ -11,7 +11,7 @@
 
 - 🌱 I’m currently learning **Next JS**
 
-- 👨‍💻 All of my projects are available at [https://dineshvaportfolio.vercel.app/](https://dineshvaportfolio.vercel.app/)
+- 👨‍💻 All of my projects are available at [https://dineshva.vercel.app/](https://dineshva.vercel.app/)
 
 - 💬 Ask me about **react,node,express,mongodb**
 

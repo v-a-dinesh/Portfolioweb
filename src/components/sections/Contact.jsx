@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
 import EarthCanvas from "../canvas/Earth";
 
+// Your existing styled components (keep them all the same)
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -51,6 +52,7 @@ const Desc = styled.div`
     font-size: 16px;
   }
 `;
+
 const ContactForm = styled.form`
   width: 95%;
   max-width: 600px;
@@ -63,13 +65,16 @@ const ContactForm = styled.form`
   box-shadow: rgba(23, 92, 230, 0.1) 0px 4px 24px;
   margin-top: 28px;
   gap: 12px;
+  position: relative;
 `;
+
 const ContactTitle = styled.div`
   font-size: 28px;
   margin-bottom: 6px;
   font-weight: 600;
   color: ${({ theme }) => theme.text_primary};
 `;
+
 const ContactInput = styled.input`
   flex: 1;
   background-color: transparent;
@@ -83,6 +88,7 @@ const ContactInput = styled.input`
     border: 1px solid ${({ theme }) => theme.primary};
   }
 `;
+
 const ContactInputMessage = styled.textarea`
   flex: 1;
   background-color: transparent;
@@ -96,22 +102,13 @@ const ContactInputMessage = styled.textarea`
     border: 1px solid ${({ theme }) => theme.primary};
   }
 `;
+
 const ContactButton = styled.input`
   width: 100%;
   text-decoration: none;
   text-align: center;
   background: hsla(271, 100%, 50%, 1);
   background: linear-gradient(
-    225deg,
-    hsla(271, 100%, 50%, 1) 0%,
-    hsla(294, 100%, 50%, 1) 100%
-  );
-  background: -moz-linear-gradient(
-    225deg,
-    hsla(271, 100%, 50%, 1) 0%,
-    hsla(294, 100%, 50%, 1) 100%
-  );
-  background: -webkit-linear-gradient(
     225deg,
     hsla(271, 100%, 50%, 1) 0%,
     hsla(294, 100%, 50%, 1) 100%
@@ -123,29 +120,143 @@ const ContactButton = styled.input`
   color: ${({ theme }) => theme.text_primary};
   font-size: 18px;
   font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+`;
+
+// Add just these 3 new styled components
+const StatusMessage = styled.div`
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  text-align: center;
+  font-weight: 500;
+
+  &.success {
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22c55e;
+  }
+
+  &.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+  }
+`;
+
+const LoadingOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  z-index: 10;
+`;
+
+const Spinner = styled.div`
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid ${({ theme }) => theme.primary};
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 const Contact = () => {
   const form = useRef();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
-  const handleSubmit = (e) => {
+  // Simple validation
+  const validateForm = (formData) => {
+    if (!formData.get("from_name")?.trim()) return "Please enter your name";
+    if (!formData.get("from_email")?.trim()) return "Please enter your email";
+    if (!formData.get("subject")?.trim()) return "Please enter a subject";
+    if (!formData.get("message")?.trim()) return "Please enter a message";
+
+    const email = formData.get("from_email");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Please enter a valid email";
+
+    return null;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    emailjs
-      .sendForm(
-        "service_tox7kqs",
-        "template_nv7k7mj",
+
+    const formData = new FormData(form.current);
+    const validationError = validateForm(formData);
+
+    if (validationError) {
+      setMessage({ type: "error", text: validationError });
+      return;
+    }
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      // Send admin email (to you)
+      await emailjs.sendForm(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_ADMIN_TEMPLATE,
         form.current,
-        "SybVGsYS52j2TfLbi"
-      )
-      .then(
-        (result) => {
-          alert("Message Sent");
-          form.current.resut();
-        },
-        (error) => {
-          alert(error);
-        }
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
       );
+
+      // Send user confirmation email
+      // In your Contact.js handleSubmit function, replace the userTemplateParams:
+      const userTemplateParams = {
+        to_email: formData.get("from_email"),
+        from_name: formData.get("from_name"),
+        subject: formData.get("subject"),
+        message: formData.get("message"),
+        your_name: "Dinesh VA", // Replace with your actual name
+        sent_date: new Date().toLocaleString(),
+        phone: formData.get("phone") || "Not provided", // Add phone field if needed
+      };
+
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_USER_TEMPLATE,
+        userTemplateParams,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+
+      setMessage({
+        type: "success",
+        text: "Message sent successfully! You should receive a confirmation email shortly.",
+      });
+
+      form.current.reset();
+    } catch (error) {
+      console.error("Email error:", error);
+      setMessage({
+        type: "error",
+        text: "Failed to send message. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -156,13 +267,42 @@ const Contact = () => {
         <Desc>
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
-        <ContactForm onSubmit={handleSubmit}>
+        <ContactForm ref={form} onSubmit={handleSubmit}>
           <ContactTitle>Email Me 🚀</ContactTitle>
-          <ContactInput placeholder="Your Email" name="from_email" />
-          <ContactInput placeholder="Your Name" name="from_name" />
-          <ContactInput placeholder="Subject" name="subject" />
-          <ContactInputMessage placeholder="Message" name="message" rows={4} />
-          <ContactButton type="submit" value="Send" />
+          <ContactInput
+            placeholder="Your Email*"
+            name="from_email"
+            type="email"
+            required
+          />
+          <ContactInput
+            placeholder="Phone Number (Optional)"
+            name="phone"
+            type="tel"
+          />
+          <ContactInput placeholder="Your Name*" name="from_name" required />
+          <ContactInput placeholder="Subject*" name="subject" required />
+          <ContactInputMessage
+            placeholder="Message*"
+            name="message"
+            rows={4}
+            required
+          />
+          <ContactButton
+            type="submit"
+            value={loading ? "Sending..." : "Send"}
+            disabled={loading}
+          />
+          {message && (
+            <StatusMessage className={message.type}>
+              {message.text}
+            </StatusMessage>
+          )}
+          {loading && (
+            <LoadingOverlay>
+              <Spinner />
+            </LoadingOverlay>
+          )}
         </ContactForm>
       </Wrapper>
     </Container>

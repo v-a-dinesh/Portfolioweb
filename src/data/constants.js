@@ -567,23 +567,10 @@ export const projects = [
     github: "https://github.com/v-a-dinesh/Tax-Loss-Harvester",
     webapp: "https://tax-loss-harvester-xi.vercel.app/",
   },
-  {
-    id: 11,
-    title: "Todo App",
-    date: "2024",
-    description:
-      "A dynamic todo application built with modern web technologies that allows users to create, manage, and track their daily tasks efficiently. Features include adding new todos, marking tasks as complete, deleting tasks, and persistent storage. The app provides a clean and intuitive user interface with real-time updates.",
-    image:
-      "https://nkb-backend-media-static-tenxiitian.s3.ap-south-1.amazonaws.com/tenxiitian_prod/programs/Tech+Programs/frontend-content/ccbp/coding-practice-questions/dynamic-webapps/todo-application-part-5-v1.gif",
-    tags: ["React", "CSS", "JavaScript", "Task Management", "CRUD Operations"],
-    category: "web app",
-    github: "https://github.com/v-a-dinesh/Todo-App",
-    webapp: "https://todoapp.ccbp.tech/",
-},
 {
-    id: 12,
+    id: 11,
     title: "Jobby App",
-    date: "2024",
+    date: "Sept 2024",
     description:
       "A comprehensive job search platform built with React that enables users to browse, filter, and apply for job opportunities. Features include user authentication, advanced job filtering by salary range and employment type, detailed job descriptions, and a responsive design. The application provides a seamless job hunting experience with an intuitive interface.",
     image:
@@ -593,6 +580,18 @@ export const projects = [
     github: "https://github.com/v-a-dinesh/Jobby-App",
     webapp: "https://jobbyappvad.ccbp.tech/login",
 },
-  
+{
+  id: 12,
+  title: "Todo App",
+  date: "Jan 2023",
+  description:
+    "A dynamic todo application built with modern web technologies that allows users to create, manage, and track their daily tasks efficiently. Features include adding new todos, marking tasks as complete, deleting tasks, and persistent storage. The app provides a clean and intuitive user interface with real-time updates.",
+  image:
+    "https://nkb-backend-media-static-tenxiitian.s3.ap-south-1.amazonaws.com/tenxiitian_prod/programs/Tech+Programs/frontend-content/ccbp/coding-practice-questions/dynamic-webapps/todo-application-part-5-v1.gif",
+  tags: ["React", "CSS", "JavaScript", "Task Management", "CRUD Operations"],
+  category: "web app",
+  github: "https://github.com/v-a-dinesh/Todo-App",
+  webapp: "https://todoapp.ccbp.tech/",
+},  
 ];
 

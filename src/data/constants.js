@@ -477,7 +477,20 @@ export const projects = [
     webapp: "https://projectra-ochre.vercel.app/",
   },
   {
-    id: 4,
+  id: 4,
+  title: "MediDiagnose",
+  date: "Jul 2025",
+  description:
+    "MediDiagnose is a machine learning-powered medical diagnostic platform that detects bone fractures from X-ray images with high accuracy. Built using FastAPI and YOLOv8, it offers real-time inference, Grad-CAM visualizations for model explainability, and a clean web interface for both clinicians and developers. Future-ready for multi-disease detection and API integration.",
+  image:
+    "https://github.com/v-a-dinesh/MediDiagnose/raw/main/frontend/images/sample-result.jpg",
+  tags: ["FastAPI", "YOLOv8", "Machine Learning", "Computer Vision", "Medical Imaging", "Grad-CAM"],
+  category: "machine learning",
+  github: "https://github.com/v-a-dinesh/MediDiagnose",
+  webapp: "https://medi-diagnose-zeta.vercel.app/"
+},
+{
+    id: 5,
     title: "Brain Tumor Detection",
     date: "Jan 2025 -  Jun 2025",
     description:
@@ -490,7 +503,7 @@ export const projects = [
     webapp: "https://brain-tumor-detection-neon.vercel.app/",
   },
   {
-    id: 5,
+    id: 6,
     title: "Email/SMS Spam Detection",
     date: "Mar 2025 - Jun 2025",
     description:
@@ -503,7 +516,7 @@ export const projects = [
     webapp: "https://email-sms-spam-detection-vad.streamlit.app/",
   },
   {
-    id: 6,
+    id: 7,
     title: "Movie Recommender System",
     date: "Feb 2025 - May 2025",
     description:
@@ -516,7 +529,7 @@ export const projects = [
     webapp: "https://movie-recommender-system-vad.streamlit.app/",
   },
   {
-    id: 7,
+    id: 8,
     title: "Nxt Trendz - E-Commerce Application",
     date: "Mar 2025 - Jun 2025",
     description:
@@ -529,7 +542,7 @@ export const projects = [
     webapp: "https://cartnxttrend.ccbp.tech/login",
   },
   {
-    id: 8,
+    id: 9,
     title: "Nxt Watch - YouTube Clone",
     date: "Mar 2025 - Jun 2025",
     description:
@@ -542,7 +555,7 @@ export const projects = [
     webapp: "https://nxtwatchvad.ccbp.tech/login",
   },
   {
-    id: 9,
+    id: 10,
     title: "Mobius Strip Generator",
     date: "May 2025",
     description:
@@ -555,7 +568,7 @@ export const projects = [
     webapp: "https://github.com/v-a-dinesh/mobius-strip", // No hosted version
   },
   {
-    id: 10,
+    id: 11,
     title: "Tax Loss Harvester",
     date: "June 2025",
     description:
@@ -568,7 +581,7 @@ export const projects = [
     webapp: "https://tax-loss-harvester-xi.vercel.app/",
   },
 {
-    id: 11,
+    id: 12,
     title: "Jobby App",
     date: "Sept 2024",
     description:
@@ -581,7 +594,7 @@ export const projects = [
     webapp: "https://jobbyappvad.ccbp.tech/login",
 },
 {
-  id: 12,
+  id: 13,
   title: "Todo App",
   date: "Jan 2023",
   description:
